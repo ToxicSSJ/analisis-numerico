@@ -1,2 +1,4 @@
 backend/rust/target
 backend/java/build
+
+node_modules/

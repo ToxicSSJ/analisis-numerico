@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .columns.is-centered.mt-5
+    .column.is-5
+      h2.title.is-4 LU Decomposition
+      form#lu-decomposition-form
+        .field
+          label.label Matrix (A)
+          .control
+            #matrix-input
+        .field.is-grouped
+          .control
+            button.button.is-link(type='submit') Calculate
+
+    .column.is-5
+      h2.title.is-4 Results
+      .content
+        h3.subtitle.is-5 Method Results
+        p#result-text
+        .results-container
+          p#solution Solution:
+          .result-table#result-solution
+          p#l-result L Result:
+          .result-table#result-matrix-l
+          p#u-result U Result:
+          .result-table#result-matrix-u
+
+block scripts
+  script(src="/js/lu-decomposition.js")

@@ -16,7 +16,6 @@ repositories {
 }
 
 dependencies {
-
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 
@@ -37,4 +36,16 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+	mainClass.set("com.numetrify.NumetrifyApplication")
+}
+
+tasks.getByName<Jar>("jar") {
+	enabled = true
+}
+
+springBoot {
+	mainClass.set("com.numetrify.NumetrifyApplication")
 }

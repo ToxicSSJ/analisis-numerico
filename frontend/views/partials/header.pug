@@ -1,0 +1,49 @@
+nav.navbar.is-white.topNav
+  .container
+    .navbar-brand
+      a.navbar-item(href='/')
+        img(src='/assets/logo.png' width='112' height='300' class='custom-logo')
+      .navbar-burger.burger(data-target='topNav')
+        span
+        span
+        span
+    #topNav.navbar-menu
+      .navbar-start
+        .navbar-item.has-dropdown.is-hoverable
+          a.navbar-link(href='#') Matrix Methods
+          .navbar-dropdown
+            a.navbar-item(href='/cholesky') Cholesky
+            a.navbar-item(href='/crout') Crout
+            a.navbar-item(href='/doolittle') Doolittle
+            a.navbar-item(href='/gaussian-elimination') Gaussian Elimination
+            a.navbar-item(href='/lu-decomposition') LU Decomposition
+            a.navbar-item(href='/jacobi') Jacobi
+            a.navbar-item(href='/gauss-seidel') Gauss-Seidel
+            // a.navbar-item(href='#') SOR
+            // a.navbar-item(href='#') Vandermonde
+        .navbar-item.has-dropdown.is-hoverable
+          a.navbar-link(href='#') Roots Methods
+          .navbar-dropdown
+            a.navbar-item(href='/bisection') Bisection
+            a.navbar-item(href='/false-rule') False Rule
+            a.navbar-item(href='/fixed-point') Fixed Point
+            a.navbar-item(href='/incremental-search') Incremental Search
+            a.navbar-item(href='/multiple-roots') Multiple Roots
+            // todo a.navbar-item(href='#') Newton Divided Differences
+            a.navbar-item(href='/newton-raphson') Newton-Raphson
+            a.navbar-item(href='/secant') Secant
+      .navbar-end
+        .navbar-item.has-dropdown
+          a.navbar-link(href='#' onclick='toggleDropdown(event)') 
+            span.icon
+              img(src='' alt='' id='selected-language-icon' width='16' height='16')
+            span#selected-language Programming Language
+          .navbar-dropdown
+            a.navbar-item(href='#' onclick='selectLanguage("Java", "/assets/java-icon.png")')
+              span.icon
+                img(src='/assets/java-icon.png' width='16' height='16')
+              span Java
+            a.navbar-item(href='#' onclick='selectLanguage("Rust", "/assets/rust-icon.png")')
+              span.icon
+                img(src='/assets/rust-icon.png' width='16' height='16')
+              span Rust

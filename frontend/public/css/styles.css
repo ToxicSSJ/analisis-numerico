@@ -1,0 +1,197 @@
+.custom-logo {
+    height: 112px;
+    width: auto;
+    /* Ajusta el ancho automáticamente para mantener la proporción */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-item img.custom-logo {
+    max-height: none;
+    /* Asegúrate de que no haya restricciones en la altura máxima */
+}
+
+:root {
+    ::-webkit-scrollbar {
+        height: 10px;
+        width: 10px
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #efefef;
+        border-radius: 6px
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #d5d5d5;
+        border-radius: 6px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #c4c4c4
+    }
+}
+
+html,
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    background: #F2F6FA;
+}
+
+footer {
+    background-color: #F2F6FA !important;
+}
+
+.topNav {
+    border-top: 5px solid #3498DB;
+}
+
+.topNav .container {
+    border-bottom: 1px solid #E6EAEE;
+}
+
+.container .columns {
+    margin: 3rem 0;
+}
+
+.navbar-menu .navbar-item {
+    padding: 0 2rem;
+}
+
+aside.menu {
+    padding-top: 3rem;
+}
+
+aside.menu .menu-list {
+    line-height: 1.5;
+}
+
+aside.menu .menu-label {
+    padding-left: 10px;
+    font-weight: 700;
+}
+
+.button.is-primary.is-alt {
+    background: #00c6ff;
+    background: -webkit-linear-gradient(to bottom, #0072ff, #00c6ff);
+    background: linear-gradient(to bottom, #0072ff, #00c6ff);
+    font-weight: 700;
+    font-size: 14px;
+    height: 3rem;
+    line-height: 2.8;
+}
+
+.media-left img {
+    border-radius: 50%;
+}
+
+.media-content p {
+    font-size: 14px;
+    line-height: 2.3;
+    font-weight: 700;
+    color: #8F99A3;
+}
+
+article.post {
+    margin: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #E6EAEE;
+}
+
+article.post:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.menu-list li {
+    padding: 5px;
+}
+  
+  
+  .navbar-item.has-dropdown:hover .navbar-link {
+    background-color: #f5f5f5; /* Color de fondo al pasar el cursor */
+  }
+  
+
+  /* Ajustes personalizados para el picker de lenguajes de programación */
+/* Estilizar el dropdown para mejorar el contraste */
+.navbar .dropdown-menu {
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
+  }
+  
+  .navbar .dropdown-menu .navbar-item {
+    color: #fff; /* Texto blanco */
+  }
+  
+  .navbar .dropdown-menu .dropdown-item:hover {
+    background-color: #444; /* Fondo ligeramente más claro al pasar el cursor */
+  }
+  
+  /* Asegurarse de que los iconos se muestren correctamente */
+  .dropdown-item img {
+    margin-right: 8px;
+  }
+  
+  body {
+    background-color: #f5f5f5; /* Fondo claro */
+    color: #333; /* Texto oscuro */
+  }
+  
+  #history {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  #result-text {
+    margin-bottom: 20px;
+  }
+  
+  #result-chart {
+    width: 100%;
+    height: 400px;
+  }
+  
+  .field {
+    margin-bottom: 15px;
+  }
+
+  .label {
+    color: black;
+  }
+
+  .title.is-4 {
+    color: black;
+  }
+  
+  .subtitle.is-5 {
+    color: black;
+  }
+
+
+
+
+
+.result-table table {
+  width: 100%;
+  color: black;
+}
+
+.colHeader {
+  color: black;
+}
+
+.rowHeader {
+  color: black;
+}
+
+.handsontable th,
+  .handsontable td {
+    height: 30px !important; /* Ajusta este valor según sea necesario */
+    line-height: 30px !important; /* Asegura que el contenido esté centrado verticalmente */
+  }

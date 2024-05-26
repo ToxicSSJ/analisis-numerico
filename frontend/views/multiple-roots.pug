@@ -1,0 +1,63 @@
+extends layout
+
+block content
+  .columns.is-centered.mt-5
+    .column.is-5
+      h2.title.is-4 Multiple Roots Method
+      form#multiple-roots-form
+        .field
+          label.label Function
+          .control
+            input.input(type='text' name='function' required placeholder='Enter the function' id='function-input')
+        .field
+          .control
+            p#latex-output
+        .field
+          label.label Initial Guess
+          .control
+            input.input(type='number' name='initialGuess' required placeholder='Enter the initial guess' step='any')
+        .field
+          label.label Precision Type
+          .control
+            div.select
+              select(name='precisionType')
+                option(value='1') Significant Digits
+                option(value='2') Correct Decimals
+        .field
+          label.label Error Type
+          .control
+            div.select
+              select(name='errorType')
+                option(value='1') Absolute
+                option(value='2') Relative
+        .field
+          label.label Tolerance
+          .control
+            input.input(type='number' name='toleranceValue' required placeholder='Enter the tolerance')
+        .field
+          label.label Maximum Iterations
+          .control
+            input.input(type='number' name='maxIterations' required placeholder='Enter the maximum iterations')
+        .field.is-grouped
+          .control
+            button.button.is-link(type='submit') Calculate
+
+    .column.is-5
+      h2.title.is-4 Results
+      .content
+        h3.subtitle.is-5 Method Results
+        p#result-text
+        table.table.is-striped.is-fullwidth
+          thead
+            tr
+              th Iteration
+              th x
+              th f(x)
+              th f'(x)
+              th f''(x)
+              th Error
+          tbody#result-table
+        #result-chart
+
+block scripts
+  script(src="/js/multiple-roots.js")
