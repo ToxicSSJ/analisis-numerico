@@ -7,10 +7,12 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class BisectionResponse {
+public class MultipleRootsResponse {
     private String message;
-    private List<Double> xVals;
-    private List<Double> fVals;
+    private List<Double> xValues;
+    private List<Double> functionValues;
+    private List<Double> firstDerivatives;
+    private List<Double> secondDerivatives;
     private List<Double> errors;
     private List<Integer> iterations;
 }

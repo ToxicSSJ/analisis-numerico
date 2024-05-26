@@ -29,6 +29,8 @@ dependencies {
 	// Math parser dependencies
 	implementation("org.mariuszgromada.math:MathParser.org-mXparser:6.0.0")
 	implementation("org.jfree:jfreechart:1.5.3")
+	implementation("org.apache.commons:commons-math3:3.6.1")
+	implementation("org.matheclipse:matheclipse-core:3.0.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

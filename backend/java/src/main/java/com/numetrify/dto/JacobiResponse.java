@@ -7,10 +7,8 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class BisectionResponse {
+public class JacobiResponse {
     private String message;
-    private List<Double> xVals;
-    private List<Double> fVals;
+    private List<double[]> xValues;
     private List<Double> errors;
-    private List<Integer> iterations;
 }
