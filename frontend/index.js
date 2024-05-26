@@ -15,7 +15,10 @@ app.get('/', (req, res) => {
 
 app.get('/config.js', (req, res) => {
   res.type('application/javascript');
-  res.send(`const apiBaseUrl = '${process.env.API_BASE_URL}'; export { apiBaseUrl };`);
+  res.send(`
+  const javaUrl = '${process.env.JAVA_API_BASE_URL}';
+  const rustUrl = '${process.env.RUST_API_BASE_URL}';
+   export { javaUrl, rustUrl };`);
 });
 
 app.get('/bisection', (req, res) => {

@@ -1,8 +1,8 @@
-import { apiBaseUrl } from '/config.js'
+import { javaUrl, rustUrl } from '/config.js'
 
 document.addEventListener("DOMContentLoaded", function() {
     
-    console.log(apiBaseUrl)
+    console.log(javaUrl)
 
     if (!window.location.pathname.startsWith('/bisection')) {
         return;
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             maxIterations: formData.get('maxIterations')
         });
 
-        fetch(`${apiBaseUrl}/api/v1/bisection?${params.toString()}`, {
+        fetch(`${javaUrl}/api/v1/bisection?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

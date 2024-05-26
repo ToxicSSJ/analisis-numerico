@@ -1,4 +1,4 @@
-import { apiBaseUrl } from '/config.js'
+import { javaUrl, rustUrl } from '/config.js'
 
 document.addEventListener("DOMContentLoaded", function() {
 
