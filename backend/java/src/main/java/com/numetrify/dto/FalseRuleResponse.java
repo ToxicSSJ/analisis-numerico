@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class FalsePositionResponse {
+public class FalseRuleResponse {
     private String message;
     private List<Double> xValues;
     private List<Double> functionValues;

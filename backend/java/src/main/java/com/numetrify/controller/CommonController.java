@@ -19,7 +19,7 @@ public class CommonController {
     private BisectionService bisectionService;
 
     @Autowired
-    private FalsePositionService falsePositionService;
+    private FalseRuleService falseRuleService;
 
     @Autowired
     private FixedPointService fixedPointService;
@@ -79,9 +79,9 @@ public class CommonController {
         return bisectionService.bisection(function, a, b, precisionType, errorType, toleranceValue, maxIterations);
     }
 
-    @Operation(summary = "Performs the false position method", description = "Calculates the root of a function using the false position method.")
-    @PostMapping("/false-position")
-    public FalsePositionResponse falsePosition(
+    @Operation(summary = "Performs the false rule method", description = "Calculates the root of a function using the false rule method.")
+    @PostMapping("/false-rule")
+    public FalseRuleResponse falseRule(
             @RequestParam String function,
             @RequestParam double lowerBound,
             @RequestParam double upperBound,
@@ -89,7 +89,7 @@ public class CommonController {
             @RequestParam int errorType,
             @RequestParam double toleranceValue,
             @RequestParam int maxIterations) {
-        return falsePositionService.falsePosition(function, lowerBound, upperBound, precisionType, errorType, toleranceValue, maxIterations);
+        return falseRuleService.falseRule(function, lowerBound, upperBound, precisionType, errorType, toleranceValue, maxIterations);
     }
 
     @Operation(summary = "Performs the fixed point method", description = "Calculates the root of a function using the fixed point method.")
@@ -105,15 +105,17 @@ public class CommonController {
         return fixedPointService.fixedPoint(function, gFunction, initialGuess, precisionType, errorType, toleranceValue, maxIterations);
     }
 
-    @Operation(summary = "Performs the Newton-Raphson method", description = "Calculates the root of a function using the Newton-Raphson method.")
-    @PostMapping("/newton-raphson")
-    public NewtonRaphsonResponse newtonRaphson(
+    @Operation(summary = "Performs incremental search", description = "Searches for roots of a function using the incremental search method.")
+    @PostMapping("/incremental-search")
+    public IncrementalSearchResponse incrementalSearch(
             @RequestParam String function,
-            @RequestParam double initialGuess,
+            @RequestParam double x0,
+            @RequestParam double h,
+            @RequestParam int maxIterations,
+            @RequestParam int precisionType,
             @RequestParam int errorType,
-            @RequestParam double toleranceValue,
-            @RequestParam int maxIterations) {
-        return newtonRaphsonService.newtonRaphson(function, initialGuess, errorType, toleranceValue, maxIterations);
+            @RequestParam double toleranceValue) {
+        return incrementalSearchService.incrementalSearch(function, x0, h, maxIterations, precisionType, errorType, toleranceValue);
     }
 
     @Operation(summary = "Performs the multiple roots method", description = "Calculates the root of a function using the multiple roots method.")
@@ -122,9 +124,22 @@ public class CommonController {
             @RequestParam String function,
             @RequestParam double initialGuess,
             @RequestParam int errorType,
+            @RequestParam int precisionType,
             @RequestParam double toleranceValue,
             @RequestParam int maxIterations) {
-        return multipleRootsService.multipleRoots(function, initialGuess, errorType, toleranceValue, maxIterations);
+        return multipleRootsService.multipleRoots(function, initialGuess, errorType, precisionType, toleranceValue, maxIterations);
+    }
+
+    @Operation(summary = "Performs the Newton-Raphson method", description = "Calculates the root of a function using the Newton-Raphson method.")
+    @PostMapping("/newton-raphson")
+    public NewtonRaphsonResponse newtonRaphson(
+            @RequestParam String function,
+            @RequestParam double initialGuess,
+            @RequestParam int errorType,
+            @RequestParam int precisionType,
+            @RequestParam double toleranceValue,
+            @RequestParam int maxIterations) {
+        return newtonRaphsonService.newtonRaphson(function, initialGuess, errorType, precisionType, toleranceValue, maxIterations);
     }
 
     @Operation(summary = "Performs the secant method", description = "Calculates the root of a function using the secant method.")
@@ -134,9 +149,10 @@ public class CommonController {
             @RequestParam double initialGuess1,
             @RequestParam double initialGuess2,
             @RequestParam int errorType,
+            @RequestParam int precisionType,
             @RequestParam double toleranceValue,
             @RequestParam int maxIterations) {
-        return secantService.secant(function, initialGuess1, initialGuess2, errorType, toleranceValue, maxIterations);
+        return secantService.secant(function, initialGuess1, initialGuess2, errorType, precisionType, toleranceValue, maxIterations);
     }
 
     @Operation(summary = "Solves a system of linear equations using the Jacobi method", description = "Solves a system of linear equations using the Jacobi iterative method.")
@@ -200,16 +216,6 @@ public class CommonController {
         double[] x = Arrays.stream(xValues.split(" ")).mapToDouble(Double::parseDouble).toArray();
         double[] y = Arrays.stream(yValues.split(" ")).mapToDouble(Double::parseDouble).toArray();
         return newtonDividedDifferencesService.newtonDividedDifferences(x, y);
-    }
-
-    @Operation(summary = "Performs incremental search", description = "Searches for roots of a function using the incremental search method.")
-    @PostMapping("/incremental-search")
-    public IncrementalSearchResponse incrementalSearch(
-            @RequestParam String function,
-            @RequestParam double x0,
-            @RequestParam double h,
-            @RequestParam int maxIterations) {
-        return incrementalSearchService.incrementalSearch(function, x0, h, maxIterations);
     }
 
     @Operation(summary = "Solves a system using Gaussian Elimination", description = "Solves a system of linear equations using the Gaussian Elimination method.")

@@ -21,6 +21,7 @@ public class NewtonRaphsonService {
      * @param functionExpression the expression of the function
      * @param initialGuess the initial guess for the root
      * @param errorType the type of error to use (1 for absolute error, 2 for relative error)
+     * @param precisionType the type of precision to use (1 for significant figures, 2 for decimal places)
      * @param toleranceValue the tolerance value for the stopping criterion
      * @param maxIterations the maximum number of iterations
      * @return NewtonRaphsonResponse containing the result of the Newton-Raphson method
@@ -31,9 +32,10 @@ public class NewtonRaphsonService {
      * String functionExpression = "x^3 - x - 2";
      * double initialGuess = 1.0;
      * int errorType = 1;
+     * int precisionType = 1;
      * double toleranceValue = 0.01;
      * int maxIterations = 100;
-     * NewtonRaphsonResponse response = newtonRaphsonService.newtonRaphson(functionExpression, initialGuess, errorType, toleranceValue, maxIterations);
+     * NewtonRaphsonResponse response = newtonRaphsonService.newtonRaphson(functionExpression, initialGuess, errorType, precisionType, toleranceValue, maxIterations);
      * String message = response.getMessage();
      * List<Double> xValues = response.getXValues();
      * List<Double> functionValues = response.getFunctionValues();
@@ -44,7 +46,7 @@ public class NewtonRaphsonService {
      * </pre>
      */
     @SneakyThrows
-    public NewtonRaphsonResponse newtonRaphson(String functionExpression, double initialGuess, int errorType, double toleranceValue, int maxIterations) {
+    public NewtonRaphsonResponse newtonRaphson(String functionExpression, double initialGuess, int errorType, int precisionType, double toleranceValue, int maxIterations) {
         // Define the function
         Function function = new Function("f(x) = " + functionExpression);
         // Define the argument for x
@@ -109,11 +111,17 @@ public class NewtonRaphsonService {
             errors.add(error);
         }
 
+        // Apply precision formatting
+        List<Double> formattedXValues = new ArrayList<>();
+        for (double xValue : xValues) {
+            formattedXValues.add(precisionType == 1 ? roundSignificantFigures(xValue, (int) toleranceValue) : roundDecimalPlaces(xValue, (int) toleranceValue));
+        }
+
         // Determine the result message
         String message = currentFunctionValue == 0 ? currentX + " is a root of f(x)"
                 : errors.get(iterationCount) < tolerance ? "The approximate solution is: " + currentX + ", with a tolerance = " + tolerance
                 : "Failed in " + maxIterations + " iterations";
-        return new NewtonRaphsonResponse(message, xValues, functionValues, derivatives, errors, iterations);
+        return new NewtonRaphsonResponse(message, formattedXValues, functionValues, derivatives, errors, iterations);
     }
 
     /**
@@ -128,5 +136,23 @@ public class NewtonRaphsonService {
         double f_x_h = function.calculate(x + h);
         double f_x = function.calculate(x);
         return (f_x_h - f_x) / h;
+    }
+
+    private double roundSignificantFigures(double value, int significantFigures) {
+        if (value == 0) {
+            return 0;
+        }
+
+        final double d = Math.ceil(Math.log10(value < 0 ? -value : value));
+        final int power = significantFigures - (int) d;
+
+        final double magnitude = Math.pow(10, power);
+        final long shifted = Math.round(value * magnitude);
+        return shifted / magnitude;
+    }
+
+    private double roundDecimalPlaces(double value, int decimalPlaces) {
+        double scale = Math.pow(10, decimalPlaces);
+        return Math.round(value * scale) / scale;
     }
 }

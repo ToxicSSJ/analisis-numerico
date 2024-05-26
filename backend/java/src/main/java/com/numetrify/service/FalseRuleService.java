@@ -1,6 +1,6 @@
 package com.numetrify.service;
 
-import com.numetrify.dto.FalsePositionResponse;
+import com.numetrify.dto.FalseRuleResponse;
 import lombok.SneakyThrows;
 import org.mariuszgromada.math.mxparser.Function;
 import org.springframework.stereotype.Service;
@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service class to perform the False Position method for root finding.
+ * Service class to perform the False Rule method for root finding.
  */
 @Service
-public class FalsePositionService {
+public class FalseRuleService {
 
     /**
-     * Performs the False Position method to find a root of the given function.
+     * Performs the False Rule method to find a root of the given function.
      *
      * @param functionExpression the expression of the function
      * @param lowerBound the lower bound of the interval
@@ -24,7 +24,7 @@ public class FalsePositionService {
      * @param errorType the type of error to use (1 for absolute error, 2 for relative error)
      * @param toleranceValue the tolerance value for the stopping criterion
      * @param maxIterations the maximum number of iterations
-     * @return FalsePositionResponse containing the result of the False Position method
+     * @return FalseRuleResponse containing the result of the False Position method
      * @throws IllegalArgumentException if the interval is inadequate
      *
      * Example usage:
@@ -37,7 +37,7 @@ public class FalsePositionService {
      * int errorType = 1;
      * double toleranceValue = 0.01;
      * int maxIterations = 100;
-     * FalsePositionResponse response = falsePositionService.falsePosition(functionExpression, lowerBound, upperBound, precisionType, errorType, toleranceValue, maxIterations);
+     * FalsePositionResponse response = falseRuleService.falsePosition(functionExpression, lowerBound, upperBound, precisionType, errorType, toleranceValue, maxIterations);
      * List<Double> xValues = response.getXValues();
      * List<Double> functionValues = response.getFunctionValues();
      * List<Double> errors = response.getErrors();
@@ -46,7 +46,7 @@ public class FalsePositionService {
      * </pre>
      */
     @SneakyThrows
-    public FalsePositionResponse falsePosition(String functionExpression, double lowerBound, double upperBound, int precisionType, int errorType, double toleranceValue, int maxIterations) {
+    public FalseRuleResponse falseRule(String functionExpression, double lowerBound, double upperBound, int precisionType, int errorType, double toleranceValue, int maxIterations) {
         // Create the function using the provided expression
         Function function = new Function("f(x) = " + functionExpression);
 
@@ -57,11 +57,11 @@ public class FalsePositionService {
 
         // Check if the bounds are roots of the function
         if (functionAtLowerBound == 0) {
-            return new FalsePositionResponse(lowerBound + " is a root of f(x)", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            return new FalseRuleResponse(lowerBound + " is a root of f(x)", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         } else if (functionAtUpperBound == 0) {
-            return new FalsePositionResponse(upperBound + " is a root of f(x)", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            return new FalseRuleResponse(upperBound + " is a root of f(x)", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         } else if (functionAtLowerBound * functionAtUpperBound > 0) {
-            return new FalsePositionResponse("The interval is inadequate", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            return new FalseRuleResponse("The interval is inadequate", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }
 
         // Initialize lists to store the values of x, f(x), errors, and iterations
@@ -114,7 +114,7 @@ public class FalsePositionService {
             formattedXValues.add(precisionType == 1 ? roundSignificantFigures(x, (int) toleranceValue) : roundDecimalPlaces(x, (int) toleranceValue));
         }
 
-        return new FalsePositionResponse(message, formattedXValues, functionValues, errors, iterations);
+        return new FalseRuleResponse(message, formattedXValues, functionValues, errors, iterations);
     }
 
     private double roundSignificantFigures(double value, int significantFigures) {

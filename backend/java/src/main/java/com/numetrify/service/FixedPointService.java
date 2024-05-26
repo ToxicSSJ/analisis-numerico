@@ -32,9 +32,10 @@ public class FixedPointService {
      * String gFunctionExpression = "sqrt(x + 2)";
      * double initialGuess = 1.0;
      * int errorType = 1;
+     * int precisionType = 1;
      * double toleranceValue = 0.01;
      * int maxIterations = 100;
-     * FixedPointResponse response = fixedPointService.fixedPoint(functionExpression, gFunctionExpression, initialGuess, errorType, toleranceValue, maxIterations);
+     * FixedPointResponse response = fixedPointService.fixedPoint(functionExpression, gFunctionExpression, initialGuess, precisionType, errorType, toleranceValue, maxIterations);
      * List<Double> xValues = response.getXValues();
      * List<Double> functionValues = response.getFunctionValues();
      * List<Double> errors = response.getErrors();
@@ -86,6 +87,31 @@ public class FixedPointService {
         String message = currentFunctionValue == 0 ? currentX + " is a root of f(x)"
                 : errors.get(iterationCount) < tolerance ? "The approximate solution is: " + currentX + ", with a tolerance = " + tolerance
                 : "Failed in " + maxIterations + " iterations";
-        return new FixedPointResponse(message, xValues, functionValues, errors, iterations);
+
+        // Apply precision formatting
+        List<Double> formattedXValues = new ArrayList<>();
+        for (double x : xValues) {
+            formattedXValues.add(precisionType == 1 ? roundSignificantFigures(x, (int) toleranceValue) : roundDecimalPlaces(x, (int) toleranceValue));
+        }
+
+        return new FixedPointResponse(message, formattedXValues, functionValues, errors, iterations);
+    }
+
+    private double roundSignificantFigures(double value, int significantFigures) {
+        if (value == 0) {
+            return 0;
+        }
+
+        final double d = Math.ceil(Math.log10(value < 0 ? -value : value));
+        final int power = significantFigures - (int) d;
+
+        final double magnitude = Math.pow(10, power);
+        final long shifted = Math.round(value * magnitude);
+        return shifted / magnitude;
+    }
+
+    private double roundDecimalPlaces(double value, int decimalPlaces) {
+        double scale = Math.pow(10, decimalPlaces);
+        return Math.round(value * scale) / scale;
     }
 }

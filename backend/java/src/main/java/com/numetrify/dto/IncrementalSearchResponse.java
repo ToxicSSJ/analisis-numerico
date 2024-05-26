@@ -13,4 +13,5 @@ public class IncrementalSearchResponse {
     private int iterations;
     private List<Double> xValues;
     private List<Double> functionValues;
+    private List<Double> errors;
 }

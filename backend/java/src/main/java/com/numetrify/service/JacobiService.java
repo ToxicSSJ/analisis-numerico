@@ -49,7 +49,6 @@ public class JacobiService {
      */
     @SneakyThrows
     public JacobiResponse jacobi(int size, String matrixData, String bData, String x0Data, int errorType, double toleranceValue, int maxIterations, String normType) {
-        // Parse matrix A
         double[][] A = new double[size][size];
         String[] rows = matrixData.split(";");
         for (int i = 0; i < size; i++) {
@@ -59,22 +58,17 @@ public class JacobiService {
             }
         }
 
-        // Parse vector b and initial guess x0
         double[] b = parseVector(bData, size);
         double[] x0 = parseVector(x0Data, size);
 
-        // Determine tolerance
         double tolerance = MathUtils.getTolerance(toleranceValue, errorType);
 
-        // Determine norm
         int norm = normType.equalsIgnoreCase("inf") ? Integer.MAX_VALUE : Integer.parseInt(normType);
 
-        // Initialize matrices and vectors
         RealMatrix matrixA = MatrixUtils.createRealMatrix(A);
         RealVector vectorB = MatrixUtils.createRealVector(b);
         RealVector vectorX0 = MatrixUtils.createRealVector(x0);
 
-        // Initialize D, L, U matrices
         RealMatrix D = MatrixUtils.createRealDiagonalMatrix(matrixA.getColumn(0));
         for (int i = 1; i < size; i++) {
             D.setEntry(i, i, matrixA.getEntry(i, i));
@@ -89,17 +83,14 @@ public class JacobiService {
             }
         }
 
-        // Check if matrix D is singular
         if (new LUDecomposition(D).getDeterminant() == 0) {
             return new JacobiResponse("Matrix D is singular, the method fails.", new ArrayList<>(), new ArrayList<>());
         }
 
-        // Calculate T and C
         RealMatrix D_inv = new LUDecomposition(D).getSolver().getInverse();
         RealMatrix T = D_inv.multiply(L.add(U));
         RealVector C = D_inv.operate(vectorB);
 
-        // Perform Jacobi iteration
         List<double[]> xn = new ArrayList<>();
         List<Double> errors = new ArrayList<>();
         RealVector x1;
@@ -118,10 +109,8 @@ public class JacobiService {
             iterations++;
         }
 
-        // Calculate spectral radius
         double spectralRadius = calculateSpectralRadius(T);
 
-        // Check for convergence
         String message;
         if (error < tolerance) {
             message = "The approximate solution is: " + Arrays.toString(vectorX0.toArray()) + ", with a tolerance = " + tolerance;
