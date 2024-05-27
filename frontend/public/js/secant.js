@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
             maxIterations: formData.get('maxIterations')
         });
 
-        fetch(`${apiBaseUrl}/api/v1/secant?${params.toString()}`, {
+        fetch(`${javaUrl}/api/v1/secant?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

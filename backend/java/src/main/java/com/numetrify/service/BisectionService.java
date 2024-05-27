@@ -69,36 +69,48 @@ public class BisectionService {
         List<Integer> iterations = new ArrayList<>();
 
         // Perform the bisection method
+        int iterationCount = 0;
         double midPoint = (lowerBound + upperBound) / 2;
         double functionAtMidPoint = function.calculate(midPoint);
         xValues.add(midPoint);
         functionValues.add(functionAtMidPoint);
         errors.add(100.0); // Initial error set to 100%
-        iterations.add(0);
+        iterations.add(iterationCount);
 
-        int iterationCount = 0;
-        while (errors.get(iterationCount) >= tolerance && functionAtMidPoint != 0 && iterationCount < maxIterations) {
+        double previousMidPoint = midPoint;
+
+        while (iterationCount < maxIterations) {
+            iterationCount++;
+
+            double tempX = functionAtLowerBound * functionAtMidPoint;
+
             // Update the bounds based on the sign of the function at the midPoint
-            if (functionAtLowerBound * functionAtMidPoint < 0) {
+            if (tempX < 0 || tempX == 0) {
                 upperBound = midPoint;
-                functionAtUpperBound = function.calculate(upperBound);
+                functionAtUpperBound = functionAtMidPoint;
             } else {
                 lowerBound = midPoint;
-                functionAtLowerBound = function.calculate(lowerBound);
+                functionAtLowerBound = functionAtMidPoint;
             }
 
             // Update the midpoint and function value at the midpoint
-            iterationCount++;
             midPoint = (lowerBound + upperBound) / 2;
             functionAtMidPoint = function.calculate(midPoint);
-            xValues.add(midPoint);
-            functionValues.add(functionAtMidPoint);
-            iterations.add(iterationCount);
 
             // Calculate the error based on the error type
-            double error = errorType == 1 ? Math.abs(xValues.get(iterationCount) - xValues.get(iterationCount - 1))
-                    : Math.abs((xValues.get(iterationCount) - xValues.get(iterationCount - 1)) / xValues.get(iterationCount));
+            double error = errorType == 1 ? Math.abs(midPoint - previousMidPoint)
+                    : Math.abs((midPoint - previousMidPoint) / midPoint);
+            xValues.add(midPoint);
+            functionValues.add(functionAtMidPoint);
             errors.add(error);
+            iterations.add(iterationCount);
+
+            // Check for convergence
+            if (error < tolerance) {
+                break;
+            }
+
+            previousMidPoint = midPoint;
         }
 
         // Determine the result message

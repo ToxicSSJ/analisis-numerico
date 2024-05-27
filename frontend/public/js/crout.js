@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
             vectorData: vectorData
         });
 
-        fetch(`${apiBaseUrl}/api/v1/crout?${params.toString()}`, {
+        fetch(`${javaUrl}/api/v1/crout?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

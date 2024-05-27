@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
             matrixData: formattedMatrix
         });
 
-        fetch(`${apiBaseUrl}/api/v1/lu-decomposition?${params.toString()}`, {
+        fetch(`${javaUrl}/api/v1/lu-decomposition?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

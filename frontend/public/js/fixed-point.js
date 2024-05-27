@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         // Enviar los datos al backend como parámetros de consulta
-        fetch(`${apiBaseUrl}/api/v1/fixed-point?${params.toString()}`, {
+        fetch(`${javaUrl}/api/v1/fixed-point?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

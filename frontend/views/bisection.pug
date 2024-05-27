@@ -16,11 +16,11 @@ block content
         .field
           label.label Lower Limit (a)
           .control
-            input.input(type='number' name='a' required placeholder='Enter the value of a')
+            input.input(type='number' name='a' required placeholder='Enter the value of a' step='any')
         .field
           label.label Upper Limit (b)
           .control
-            input.input(type='number' name='b' required placeholder='Enter the value of b')
+            input.input(type='number' name='b' required placeholder='Enter the value of b' step='any')
         .field
           label.label Precision Type
           .control
@@ -38,11 +38,11 @@ block content
         .field
           label.label Tolerance
           .control
-            input.input(type='number' name='toleranceValue' required placeholder='Enter the tolerance')
+            input.input(type='number' name='toleranceValue' required placeholder='Enter the tolerance' step='any')
         .field
           label.label Maximum Iterations
           .control
-            input.input(type='number' name='maxIterations' required placeholder='Enter the maximum iterations')
+            input.input(type='number' name='maxIterations' required placeholder='Enter the maximum iterations' step='any')
         .field.is-grouped
           .control
             button.button.is-link(type='submit') Calculate

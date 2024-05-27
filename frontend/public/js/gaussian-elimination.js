@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             vectorB: vectorData
         });
 
-        fetch(`${apiBaseUrl}/api/v1/gaussian-elimination?${params.toString()}`, {
+        fetch(`${javaUrl}/api/v1/gaussian-elimination?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

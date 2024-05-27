@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
             norm: formData.get('norm')
         });
 
-        fetch(`${apiBaseUrl}/api/v1/gauss-seidel?${params.toString()}`, {
+        fetch(`${javaUrl}/api/v1/gauss-seidel?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())
