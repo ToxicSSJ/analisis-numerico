@@ -1,5 +1,3 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
     if (!window.location.pathname.startsWith('/secant')) {
@@ -23,13 +21,12 @@ document.addEventListener("DOMContentLoaded", function() {
             function: formData.get('function'),
             initialGuess1: formData.get('initialGuess1'),
             initialGuess2: formData.get('initialGuess2'),
-            precisionType: formData.get('precisionType'),
             errorType: formData.get('errorType'),
             toleranceValue: formData.get('toleranceValue'),
             maxIterations: formData.get('maxIterations')
         });
 
-        fetch(`${javaUrl}/api/v1/secant?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/secant?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

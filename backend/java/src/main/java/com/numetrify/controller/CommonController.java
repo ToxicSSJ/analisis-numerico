@@ -140,6 +140,34 @@ public class CommonController {
         return secantService.secant(function, initialGuess1, initialGuess2, errorType, toleranceValue, maxIterations);
     }
 
+    @Operation(summary = "Solves a system using the Cholesky method", description = "Solves a system of linear equations using the Cholesky decomposition method.")
+    @PostMapping("/cholesky")
+    public CholeskyResponse cholesky(
+            @RequestParam String matrix,
+            @RequestParam String vector) {
+        double[][] A = parseMatrix(matrix);
+        double[] B = parseVector(vector);
+        return choleskyService.cholesky(A, B);
+    }
+
+    @Operation(summary = "Solves a system using the Crout method", description = "Solves a system of linear equations using the Crout decomposition method.")
+    @PostMapping("/crout")
+    public CroutResponse crout(
+            @RequestParam String matrixData,
+            @RequestParam String vectorData) {
+        return croutService.crout(parseMatrix(matrixData), parseVector(vectorData));
+    }
+
+    @Operation(summary = "Solves a system using the Doolittle method", description = "Solves a system of linear equations using the Doolittle decomposition method.")
+    @PostMapping("/doolittle")
+    public DoolittleResponse doolittle(
+            @RequestParam String matrixData,
+            @RequestParam String bData) {
+        double[][] matrix = parseMatrix(matrixData);
+        double[] b = parseVector(bData);
+        return doolittleService.doolittle(matrix, b);
+    }
+
     @Operation(summary = "Solves a system using Simple Gaussian Elimination", description = "Solves a system of linear equations using the Simple Gaussian Elimination method.")
     @PostMapping("/simple-gaussian-elimination")
     public SimpleGaussianEliminationResponse simpleGaussianElimination(
@@ -164,34 +192,6 @@ public class CommonController {
         double[][] A = parseMatrix(matrixA);
         double[] b = parseVector(vectorB);
         return luGaussianEliminationService.luGaussianElimination(A, b);
-    }
-
-    @Operation(summary = "Solves a system using the Crout method", description = "Solves a system of linear equations using the Crout decomposition method.")
-    @PostMapping("/crout")
-    public CroutResponse crout(
-            @RequestParam String matrixData,
-            @RequestParam String vectorData) {
-        return croutService.crout(parseMatrix(matrixData), parseVector(vectorData));
-    }
-
-    @Operation(summary = "Solves a system using the Cholesky method", description = "Solves a system of linear equations using the Cholesky decomposition method.")
-    @PostMapping("/cholesky")
-    public CholeskyResponse cholesky(
-            @RequestParam String matrix,
-            @RequestParam String vector) {
-        double[][] A = parseMatrix(matrix);
-        double[] B = parseVector(vector);
-        return choleskyService.cholesky(A, B);
-    }
-
-    @Operation(summary = "Solves a system using the Doolittle method", description = "Solves a system of linear equations using the Doolittle decomposition method.")
-    @PostMapping("/doolittle")
-    public DoolittleResponse doolittle(
-            @RequestParam String matrixData,
-            @RequestParam String bData) {
-        double[][] matrix = parseMatrix(matrixData);
-        double[] b = parseVector(bData);
-        return doolittleService.doolittle(matrix, b);
     }
 
     @Operation(summary = "Solves a system of linear equations using the Jacobi method", description = "Solves a system of linear equations using the Jacobi iterative method.")

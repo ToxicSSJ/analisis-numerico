@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .columns.is-centered.mt-5
+    .column.is-5
+      h2.title.is-4 Pivot Gaussian Elimination
+      form#gaussian-elimination-form
+        .field
+          label.label Matrix (A)
+          .control
+            #matrix-input
+        .field
+          label.label Vector (b)
+          .control
+            input.input(type='text' name='vector' required placeholder='Enter the vector' id='vector-input')
+        .field.is-grouped
+          .control
+            button.button.is-link(type='submit') Calculate
+
+    .column.is-5
+      h2.title.is-4 Results
+      .content
+        h3.subtitle.is-5 Method Results
+        p#result-text
+        .results-container
+          p#solution Solution:
+          .result-table#result-solution
+
+block scripts
+  script(type="module" src="/js/pivot-gaussian-elimination.js")

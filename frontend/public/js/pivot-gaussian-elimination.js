@@ -1,12 +1,10 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
-    if (!window.location.pathname.startsWith('/gaussian-elimination')) {
+    if (!window.location.pathname.startsWith('/pivot-gaussian-elimination')) {
         return;
     }
 
-    console.log("Gaussian Elimination page loaded");
+    console.log("Pivot Gaussian Elimination page loaded");
 
     const form = document.getElementById('gaussian-elimination-form');
     const vectorInput = document.getElementById('vector-input');
@@ -33,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             vectorB: vectorData
         });
 
-        fetch(`${javaUrl}/api/v1/gaussian-elimination?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/pivot-gaussian-elimination?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

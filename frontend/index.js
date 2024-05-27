@@ -17,8 +17,8 @@ app.get('/config.js', (req, res) => {
   res.type('application/javascript');
   res.send(`
   const javaUrl = '${process.env.JAVA_API_BASE_URL}';
-  const rustUrl = '${process.env.RUST_API_BASE_URL}';
-   export { javaUrl, rustUrl };`);
+  const otherUrl = '${process.env.OTHER_API_BASE_URL}';
+   export { javaUrl, otherUrl };`);
 });
 
 app.get('/bisection', (req, res) => {
@@ -61,12 +61,16 @@ app.get('/doolittle', (req, res) => {
   res.render('doolittle');
 });
 
-app.get('/gaussian-elimination', (req, res) => {
-  res.render('gaussian-elimination');
+app.get('/simple-gaussian-elimination', (req, res) => {
+  res.render('simple-gaussian-elimination');
 });
 
-app.get('/lu-decomposition', (req, res) => {
-  res.render('lu-decomposition');
+app.get('/pivot-gaussian-elimination', (req, res) => {
+  res.render('pivot-gaussian-elimination');
+});
+
+app.get('/lu-gaussian-elimination', (req, res) => {
+  res.render('lu-gaussian-elimination');
 });
 
 app.get('/jacobi', (req, res) => {

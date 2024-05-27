@@ -1,5 +1,3 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
     if (!window.location.pathname.startsWith('/jacobi')) {
@@ -39,11 +37,10 @@ document.addEventListener("DOMContentLoaded", function() {
             x0: initialGuessData,
             errorType: formData.get('errorType'),
             toleranceValue: formData.get('toleranceValue'),
-            maxIterations: formData.get('maxIterations'),
-            norm: formData.get('norm')
+            maxIterations: formData.get('maxIterations')
         });
 
-        fetch(`${javaUrl}/api/v1/jacobi?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/jacobi?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

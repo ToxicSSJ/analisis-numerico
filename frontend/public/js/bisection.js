@@ -1,8 +1,4 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
-    
-    console.log(javaUrl)
 
     if (!window.location.pathname.startsWith('/bisection')) {
         return;
@@ -25,13 +21,12 @@ document.addEventListener("DOMContentLoaded", function() {
             function: formData.get('function'),
             a: formData.get('a'),
             b: formData.get('b'),
-            precisionType: formData.get('precisionType'),
             errorType: formData.get('errorType'),
             toleranceValue: formData.get('toleranceValue'),
             maxIterations: formData.get('maxIterations')
         });
 
-        fetch(`${javaUrl}/api/v1/bisection?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/bisection?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

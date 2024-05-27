@@ -1,5 +1,3 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
     if (!window.location.pathname.startsWith('/doolittle')) {
@@ -35,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             bData: vectorData
         });
 
-        fetch(`${javaUrl}/api/v1/doolittle?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/doolittle?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

@@ -1,5 +1,3 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
     if (!window.location.pathname.startsWith('/cholesky')) {
@@ -36,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         // Enviar los datos al backend como parámetros de consulta
-        fetch(`${javaUrl}/api/v1/cholesky?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/cholesky?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())
@@ -50,7 +48,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function displayResult(result) {
-        resultText.innerHTML = 'Solution and Matrices:';
+        resultText.innerHTML = '<p>Solution and Matrices:</p><p>Message: ' + result.message + '</p>';
+        console.log("Message = " + result["message"])
 
         resultSolution.innerHTML = "";
         resultMatrixL.innerHTML = "";

@@ -1,4 +1,15 @@
-// Hacer las funciones globales para que puedan ser llamadas desde el HTML
+import { javaUrl, otherUrl } from '/config.js'
+
+window.currentUrl = function() {
+    const selectedLanguage = localStorage.getItem('programmingLanguage');
+    if(selectedLanguage) {
+        if(selectedLanguage == "Python") {
+            return otherUrl;
+        }
+    }
+    return javaUrl;
+}
+
 window.selectLanguage = function(language, iconSrc) {
     localStorage.setItem('programmingLanguage', language);
     localStorage.setItem('programmingLanguageIcon', iconSrc);
@@ -44,7 +55,6 @@ console.log("Script is loaded");
 function onDomContentLoaded() {
     console.log("DOM fully loaded and parsed");
 
-    // Verificar si hay un lenguaje seleccionado previamente
     const selectedLanguage = localStorage.getItem('programmingLanguage');
     const selectedLanguageIcon = localStorage.getItem('programmingLanguageIcon');
     if (selectedLanguage && selectedLanguageIcon) {

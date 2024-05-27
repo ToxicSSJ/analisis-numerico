@@ -151,22 +151,4 @@ public class MultipleRootsService {
                 : "Failed in " + maxIterations + " iterations";
         return new MultipleRootsResponse(message, xValues, functionValues, firstDerivatives, secondDerivatives, errors, iterations);
     }
-
-    private double roundSignificantFigures(double value, int significantFigures) {
-        if (value == 0) {
-            return 0;
-        }
-
-        final double d = Math.ceil(Math.log10(value < 0 ? -value : value));
-        final int power = significantFigures - (int) d;
-
-        final double magnitude = Math.pow(10, power);
-        final long shifted = Math.round(value * magnitude);
-        return shifted / magnitude;
-    }
-
-    private double roundDecimalPlaces(double value, int decimalPlaces) {
-        double scale = Math.pow(10, decimalPlaces);
-        return Math.round(value * scale) / scale;
-    }
 }

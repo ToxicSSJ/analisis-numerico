@@ -1,5 +1,3 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
     if (!window.location.pathname.startsWith('/multiple-roots')) {
@@ -22,14 +20,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const params = new URLSearchParams({
             function: formData.get('function'),
             initialGuess: formData.get('initialGuess'),
-            precisionType: formData.get('precisionType'),
             errorType: formData.get('errorType'),
             toleranceValue: formData.get('toleranceValue'),
             maxIterations: formData.get('maxIterations')
         });
 
         // Enviar los datos al backend como parámetros de consulta
-        fetch(`${javaUrl}/api/v1/multiple-roots?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/multiple-roots?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

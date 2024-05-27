@@ -1,5 +1,3 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
     if (!window.location.pathname.startsWith('/crout')) {
@@ -35,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             vectorData: vectorData
         });
 
-        fetch(`${javaUrl}/api/v1/crout?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/crout?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

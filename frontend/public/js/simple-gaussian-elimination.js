@@ -1,18 +1,15 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
-    if (!window.location.pathname.startsWith('/lu-decomposition')) {
+    if (!window.location.pathname.startsWith('/simple-gaussian-elimination')) {
         return;
     }
 
-    console.log("LU Decomposition page loaded");
+    console.log("Simple Gaussian Elimination page loaded");
 
-    const form = document.getElementById('lu-decomposition-form');
+    const form = document.getElementById('gaussian-elimination-form');
+    const vectorInput = document.getElementById('vector-input');
     const resultText = document.getElementById('result-text');
     const resultSolution = document.getElementById('result-solution');
-    const resultMatrixL = document.getElementById('result-matrix-l');
-    const resultMatrixU = document.getElementById('result-matrix-u');
 
     var hot = new Handsontable(document.getElementById('matrix-input'), {
         data: Handsontable.helper.createSpreadsheetData(3, 3),
@@ -27,12 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const matrixData = hot.getData();
         const formattedMatrix = matrixData.map(row => row.join(' ')).join('; ');
+        const vectorData = vectorInput.value.trim();
 
         const params = new URLSearchParams({
-            matrixData: formattedMatrix
+            matrixA: formattedMatrix,
+            vectorB: vectorData
         });
 
-        fetch(`${javaUrl}/api/v1/lu-decomposition?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/simple-gaussian-elimination?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())
@@ -46,11 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function displayResult(result) {
-        resultText.innerHTML = 'Solution and Matrices:';
 
         resultSolution.innerHTML = "";
-        resultMatrixL.innerHTML = "";
-        resultMatrixU.innerHTML = "";
 
         const solutionData = result.solution.map(val => [val]);
         new Handsontable(resultSolution, {
@@ -58,22 +54,6 @@ document.addEventListener("DOMContentLoaded", function() {
             readOnly: true,
             rowHeaders: false,
             colHeaders: ['Solution'],
-            licenseKey: 'non-commercial-and-evaluation'
-        });
-
-        new Handsontable(resultMatrixL, {
-            data: result.l,
-            readOnly: true,
-            rowHeaders: true,
-            colHeaders: true,
-            licenseKey: 'non-commercial-and-evaluation'
-        });
-
-        new Handsontable(resultMatrixU, {
-            data: result.u,
-            readOnly: true,
-            rowHeaders: true,
-            colHeaders: true,
             licenseKey: 'non-commercial-and-evaluation'
         });
     }

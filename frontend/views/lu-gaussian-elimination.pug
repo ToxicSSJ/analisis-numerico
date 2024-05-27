@@ -3,8 +3,8 @@ extends layout
 block content
   .columns.is-centered.mt-5
     .column.is-5
-      h2.title.is-4 Gaussian Elimination
-      form#gaussian-elimination-form
+      h2.title.is-4 LU Decomposition
+      form#lu-decomposition-form
         .field
           label.label Matrix (A)
           .control
@@ -25,6 +25,10 @@ block content
         .results-container
           p#solution Solution:
           .result-table#result-solution
+          p#l-result L Result:
+          .result-table#result-matrix-l
+          p#u-result U Result:
+          .result-table#result-matrix-u
 
 block scripts
-  script(type="module" src="/js/gaussian-elimination.js")
+  script(type="module" src="/js/lu-gaussian-elimination.js")

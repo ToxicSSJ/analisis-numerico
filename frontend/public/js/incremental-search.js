@@ -1,5 +1,3 @@
-import { javaUrl, rustUrl } from '/config.js'
-
 document.addEventListener("DOMContentLoaded", function() {
 
     if (!window.location.pathname.startsWith('/incremental-search')) {
@@ -24,13 +22,12 @@ document.addEventListener("DOMContentLoaded", function() {
             x0: formData.get('x0'),
             h: formData.get('h'),
             maxIterations: formData.get('maxIterations'),
-            precisionType: formData.get('precisionType'),
             errorType: formData.get('errorType'),
             toleranceValue: formData.get('toleranceValue')
         });
 
         // Enviar los datos al backend como parámetros de consulta
-        fetch(`${javaUrl}/api/v1/incremental-search?${params.toString()}`, {
+        fetch(`${currentUrl()}/api/v1/incremental-search?${params.toString()}`, {
             method: 'POST'
         })
         .then(response => response.json())

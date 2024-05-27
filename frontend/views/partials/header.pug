@@ -15,12 +15,11 @@ nav.navbar.is-white.topNav
             a.navbar-item(href='/cholesky') Cholesky
             a.navbar-item(href='/crout') Crout
             a.navbar-item(href='/doolittle') Doolittle
-            a.navbar-item(href='/gaussian-elimination') Gaussian Elimination
-            a.navbar-item(href='/lu-decomposition') LU Decomposition
+            a.navbar-item(href='/simple-gaussian-elimination') Simple Gaussian Elimination
+            a.navbar-item(href='/pivot-gaussian-elimination') Pivot Gaussian Elimination
+            a.navbar-item(href='/lu-gaussian-elimination') LU Gaussian Elimination
             a.navbar-item(href='/jacobi') Jacobi
             a.navbar-item(href='/gauss-seidel') Gauss-Seidel
-            // a.navbar-item(href='#') SOR
-            // a.navbar-item(href='#') Vandermonde
         .navbar-item.has-dropdown.is-hoverable
           a.navbar-link(href='#') Roots Methods
           .navbar-dropdown
@@ -29,7 +28,6 @@ nav.navbar.is-white.topNav
             a.navbar-item(href='/fixed-point') Fixed Point
             a.navbar-item(href='/incremental-search') Incremental Search
             a.navbar-item(href='/multiple-roots') Multiple Roots
-            // todo a.navbar-item(href='#') Newton Divided Differences
             a.navbar-item(href='/newton-raphson') Newton-Raphson
             a.navbar-item(href='/secant') Secant
       .navbar-end
@@ -43,7 +41,7 @@ nav.navbar.is-white.topNav
               span.icon
                 img(src='/assets/java-icon.png' width='16' height='16')
               span Java
-            a.navbar-item(href='#' onclick='selectLanguage("Rust", "/assets/rust-icon.png")')
+            a.navbar-item(href='#' onclick='selectLanguage("Python", "/assets/python-icon.png")')
               span.icon
-                img(src='/assets/rust-icon.png' width='16' height='16')
-              span Rust
+                img(src='/assets/python-icon.png' width='16' height='16')
+              span Python
