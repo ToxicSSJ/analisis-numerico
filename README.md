@@ -46,7 +46,7 @@ frontend/
 
 ## User Manual
 
-For detailed instructions on how to use Numetrify, please refer to the [User Manual](path/to/user_manual.pdf).
+For detailed instructions on how to use Numetrify, please refer to the [User Manual](Manual.pdf).
 
 ## Creators
 
