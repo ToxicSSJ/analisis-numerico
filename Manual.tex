@@ -1,0 +1,258 @@
+\documentclass{uofa-eng-assignment}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}  
+\usepackage{amsmath}
+
+
+\newcommand*{\name}{
+\\
+Camilo Soto (cesotor@eafit.edu.co) \\
+Abraham Lora (amlorav@eafit.edu.co) \\
+Sebastian Escobar (sescobarg6@eafit.edu.co)
+}
+\newcommand*{\course}{User Manual}
+\newcommand*{\assignment}{NUMETRIFY}
+
+\begin{document}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+Numetrify is an interactive web application designed to facilitate the implementation and visualization of various numerical methods for solving equations and systems of equations. Aimed at students and researchers, Numetrify provides an intuitive interface for inputting matrices and vectors, allowing users to easily manipulate and modify their data. The application leverages advanced graphical and tabular representations to display results, making complex numerical computations more accessible and understandable. Whether you are working on academic studies or conducting research projects, Numetrify serves as a powerful tool to apply numerical methods effectively, enhancing both learning and productivity in the field of numerical analysis :
+
+
+\subsection{Roots Methods}
+
+ Bisection,  False Rule,   Fixed Point,   Incremental Search,   Multiple Roots,   Newton-Raphson,   Secant.
+
+
+\subsection{Matrix Methods }
+
+Cholesky,   Crout,  Doolittle,  Simple Gaussian Elimination,  Pivot Gaussian Elimination,  LU Gaussian Elimination,   Jacobi,  Gauss-Seidel. 
+
+\subsection{Enter Data}
+To enter data on root methods or matrix methods like a function the user should do at this form:
+\begin{itemize}
+    \item Sum: \verb|a + b|
+    \item Subtraction: \verb|a - b|
+    \item Multiplication: \verb|a * b|
+    \item Division: \verb|a / b|
+    \item Exponential: \verb|e^a|
+    \item Power: \verb|a^b|
+    \item Square Root: \verb|sqrt(a)|
+
+\subsection{Troubleshooting}
+
+\subsubsection{Error Entering Function}
+    \item Possible Cause: The function definition does not follow the correct format.
+    \item Solution: Review the function syntax and ensure you use valid operators and the variable name \verb|x|.
+
+\subsubsection{Error Entering Values}
+    \item Possible Cause: The entered value is not numeric.
+    \item Solution: Ensure the value is numeric.
+ 
+\end{itemize}
+
+
+\section{Menu}
+\subsection{Roots Methods:}
+    
+By clicking on this menu, we find the 7 Roots Methods, select by clicking on the desired one. After choosing a method, you will insert data entries that share the root methods which are:
+\begin{itemize}
+\item To enter a function it must be done as indicated above and it must only be with the variable x or numerical values.
+      \item The user must choose the type of precision and type of error, to do so they must click where the option is and select the one they prefer.
+      \item You must also indicate the tolerance and the maximum number of iterations. The only thing you have to enter is a number in each space.
+    \end{itemize}
+        
+After inserting all the data on the right side of the page of each method it will show you the result with its points and the graph
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{imagen_2024-05-26_201034825.png}
+\end{figure}
+ 
+\subsubsection{Bisection}
+For bisection, the lower bound and the upper bound are added to which a numerical value must be entered. And here are the examples:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{bisection1.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{bisection2.png}
+\end{figure}
+\subsubsection{False Rule}
+For false rule, the lower bound and the upper bound are added to which a numerical value must be entered. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{regla-falsa1.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{regla-falsa2.png}
+\end{figure}
+\subsubsection{Fixed Point}
+For fixed point, a function g(x) must be added which must follow the same instructions as all functions. An initial guess must also be entered which must be numerical values. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{punto-fijo1.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{punto-fijo2.png}
+\end{figure}
+\subsubsection{Incremental Search}
+For incremental search, an initial guess and the step size must also be entered which must be numerical values. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{incremental-search1.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{incremental-search2.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Multiple Roots:}
+\end{itemize}
+For multiple roots, an initial guess must be entered which must be numerical values. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{multiple-roots1.png}
+
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{multiple-roots2.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Newton-Raphson:}
+\end{itemize}
+For Newton-Raphson, an initial guess must be entered which must be numerical values. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{newton-raphson1.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{newton-raphson2.png}
+\end{figure}
+ \begin{itemize}
+    \item \textbf{Secant:}
+\end{itemize}
+For Secant, 2 initial guess must be entered which must be numerical values. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{secant1.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{secant2.png}
+\end{figure}
+
+
+
+    \item \textbf{Matrix Methods:}
+\end{enumerate}
+By clicking on this menu, we find the 8 matrix methods, select by clicking on the desired one. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{image.png}
+\end{figure}
+
+After selecting the matrix method, there are things in common which would be to enter the numerical data into the nxn matrix and the vector of size n and the matrix can be expanded in size with the right click but it must always be square. After that the user have to click on calculate and you can see the answer on the right side and for the methods that return LU matrices the same will be shown
+
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{WhatsApp Image 2024-05-26 at 10.00.27 PM.jpeg}
+    \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{WhatsApp Image 2024-05-26 at 10.00.37 PM.jpeg}
+
+\end{figure}
+\begin{itemize}
+    \item \textbf{Cholesky:}
+\end{itemize}
+For Cholesky, only applicable to symmetric and positive definite matrices. If the matrix does not meet these properties, the Cholesky method cannot be used. And here is the example:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{cholesky.png}
+   
+\end{figure}
+\begin{itemize}
+    \item \textbf{Crout:}
+\end{itemize}
+For Crout, cannot handle singular matrices (determinant zero) or matrices close to singularity. And here is the example:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{crout1.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Doolittle:}
+\end{itemize}
+For Doolittle, similar to the Crout method, it does not handle singular or nearly singular matrices well. And here is the example:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{doolittle1.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Simple Gussian Elimination:}
+\end{itemize}
+For Simple Gussian Elimination, without pivoting, it can be numerically unstable and fail for singular or nearly singular matrices. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{simple-gaussian-elimination1.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{simple-gaussian-elimination2.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Pivot Gussian Elimination:}
+\end{itemize}
+For Pivot Gussian Elimination, although it improves stability by including pivoting, it can still be inefficient for large and sparse matrices. And here are the examples:
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{pivot-gaussian-elimination1.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{LU Gaussian Elimination:}
+\end{itemize}
+For LU Gaussian Elimination, similar to LU methods (Crout and Doolittle), it suffers with singular or nearly singular matrices. And here are the examples:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{lu-gaussian-elimination.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Jacobi:}
+\end{itemize}
+For Jacobi, convergence is not guaranteed for all matrices. Specifically, it requires the matrix to be strictly diagonally dominant or symmetric and positive definite to ensure convergence. And on this method the user has to enter additional information for this method, which would be the type of error, he must click and select the desired option and he must enter numerical values ​​in the initial guess, the tolerance and the maximum number of iterations. Here is the example:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{jacobi1.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Gauss-Seidel:}
+\end{itemize}
+For Gauss-Seidel, Similar to the Jacobi method, it requires a strictly diagonally dominant matrix or a symmetric and positive definite matrix to ensure convergence. And on this method the user has to enter additional information for this method, which would be the type of error, he must click and select the desired option and he must enter numerical values ​​in the initial guess, the tolerance and the maximum number of iterations. Here is the example:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{gauss-seidel1.png}
+\end{figure}
+\end{document}
+
+
+
+
+
+
