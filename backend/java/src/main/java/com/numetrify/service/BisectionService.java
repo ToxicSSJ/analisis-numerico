@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import com.numetrify.dto.BisectionResponse;
 import lombok.SneakyThrows;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,16 +47,13 @@ public class BisectionService {
      * </pre>
      */
     @SneakyThrows
-    public BisectionResponse bisection(String functionExpression, double lowerBound, double upperBound, int precisionType, int errorType, double toleranceValue, int maxIterations) {
-        // Create the function using the provided expression
+    public BisectionResponse bisection(String functionExpression, double lowerBound, double upperBound, int errorType, double toleranceValue, int maxIterations) {
         Function function = new Function("f(x) = " + functionExpression);
 
-        // Calculate function values at the bounds
         double functionAtLowerBound = function.calculate(lowerBound);
         double functionAtUpperBound = function.calculate(upperBound);
-        double tolerance = precisionType == 1 ? 0.5 * Math.pow(10, -toleranceValue) : 5 * Math.pow(10, -toleranceValue);
+        BigDecimal tolerance = BigDecimal.valueOf(0.5).divide(BigDecimal.TEN.pow((int) toleranceValue), 20, RoundingMode.HALF_UP);
 
-        // Check if the bounds are roots of the function
         if (functionAtLowerBound == 0) {
             return new BisectionResponse(lowerBound + " is a root of f(x)", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         } else if (functionAtUpperBound == 0) {
@@ -62,86 +62,56 @@ public class BisectionService {
             return new BisectionResponse("The interval is inadequate", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }
 
-        // Initialize lists to store the values of x, f(x), errors, and iterations
-        List<Double> xValues = new ArrayList<>();
+        List<BigDecimal> xValues = new ArrayList<>();
         List<Double> functionValues = new ArrayList<>();
-        List<Double> errors = new ArrayList<>();
+        List<BigDecimal> errors = new ArrayList<>();
         List<Integer> iterations = new ArrayList<>();
 
-        // Perform the bisection method
         int iterationCount = 0;
-        double midPoint = (lowerBound + upperBound) / 2;
-        double functionAtMidPoint = function.calculate(midPoint);
+        BigDecimal lower = BigDecimal.valueOf(lowerBound);
+        BigDecimal upper = BigDecimal.valueOf(upperBound);
+        BigDecimal midPoint = lower.add(upper).divide(BigDecimal.valueOf(2), 20, RoundingMode.HALF_UP);
+        double functionAtMidPoint = function.calculate(midPoint.doubleValue());
         xValues.add(midPoint);
         functionValues.add(functionAtMidPoint);
-        errors.add(100.0); // Initial error set to 100%
+        errors.add(BigDecimal.valueOf(100.0)); // Initial error set to 100%
         iterations.add(iterationCount);
 
-        double previousMidPoint = midPoint;
+        BigDecimal previousMidPoint = midPoint;
 
         while (iterationCount < maxIterations) {
             iterationCount++;
 
-            double tempX = functionAtLowerBound * functionAtMidPoint;
+            double tempX = function.calculate(lower.doubleValue()) * functionAtMidPoint;
 
-            // Update the bounds based on the sign of the function at the midPoint
             if (tempX < 0 || tempX == 0) {
-                upperBound = midPoint;
-                functionAtUpperBound = functionAtMidPoint;
+                upper = midPoint;
             } else {
-                lowerBound = midPoint;
-                functionAtLowerBound = functionAtMidPoint;
+                lower = midPoint;
             }
 
-            // Update the midpoint and function value at the midpoint
-            midPoint = (lowerBound + upperBound) / 2;
-            functionAtMidPoint = function.calculate(midPoint);
+            midPoint = lower.add(upper).divide(BigDecimal.valueOf(2), 20, RoundingMode.HALF_UP);
+            functionAtMidPoint = function.calculate(midPoint.doubleValue());
 
-            // Calculate the error based on the error type
-            double error = errorType == 1 ? Math.abs(midPoint - previousMidPoint)
-                    : Math.abs((midPoint - previousMidPoint) / midPoint);
+            BigDecimal error = errorType == 1
+                    ? midPoint.subtract(previousMidPoint).abs()
+                    : midPoint.subtract(previousMidPoint).abs().divide(midPoint.abs(), 20, RoundingMode.HALF_UP);
             xValues.add(midPoint);
             functionValues.add(functionAtMidPoint);
             errors.add(error);
             iterations.add(iterationCount);
 
-            // Check for convergence
-            if (error < tolerance) {
+            if (error.compareTo(tolerance) < 0) {
                 break;
             }
 
             previousMidPoint = midPoint;
         }
 
-        // Determine the result message
         String message = functionAtMidPoint == 0 ? midPoint + " is a root of f(x)"
-                : errors.get(iterationCount) < tolerance ? "The approximate solution is: " + midPoint + ", with a tolerance = " + tolerance
+                : errors.get(iterationCount).compareTo(tolerance) < 0 ? "The approximate solution is: " + midPoint + ", with a tolerance = " + tolerance
                 : "Failed in " + maxIterations + " iterations";
 
-        // Apply precision formatting
-        List<Double> formattedXValues = new ArrayList<>();
-        for (double x : xValues) {
-            formattedXValues.add(precisionType == 1 ? roundSignificantFigures(x, (int) toleranceValue) : roundDecimalPlaces(x, (int) toleranceValue));
-        }
-
-        return new BisectionResponse(message, formattedXValues, functionValues, errors, iterations);
-    }
-
-    private double roundSignificantFigures(double value, int significantFigures) {
-        if (value == 0) {
-            return 0;
-        }
-
-        final double d = Math.ceil(Math.log10(value < 0 ? -value : value));
-        final int power = significantFigures - (int) d;
-
-        final double magnitude = Math.pow(10, power);
-        final long shifted = Math.round(value * magnitude);
-        return shifted / magnitude;
-    }
-
-    private double roundDecimalPlaces(double value, int decimalPlaces) {
-        double scale = Math.pow(10, decimalPlaces);
-        return Math.round(value * scale) / scale;
+        return new BisectionResponse(message, xValues, functionValues, errors, iterations);
     }
 }

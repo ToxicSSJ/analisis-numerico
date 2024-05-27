@@ -32,7 +32,6 @@ public class FixedPointService {
      * String gFunctionExpression = "sqrt(x + 2)";
      * double initialGuess = 1.0;
      * int errorType = 1;
-     * int precisionType = 1;
      * double toleranceValue = 0.01;
      * int maxIterations = 100;
      * FixedPointResponse response = fixedPointService.fixedPoint(functionExpression, gFunctionExpression, initialGuess, precisionType, errorType, toleranceValue, maxIterations);
@@ -44,13 +43,13 @@ public class FixedPointService {
      * </pre>
      */
     @SneakyThrows
-    public FixedPointResponse fixedPoint(String functionExpression, String gFunctionExpression, double initialGuess, int precisionType, int errorType, double toleranceValue, int maxIterations) {
+    public FixedPointResponse fixedPoint(String functionExpression, String gFunctionExpression, double initialGuess, int errorType, double toleranceValue, int maxIterations) {
         // Create the function and gFunction using the provided expressions
         Function function = new Function("f(x) = " + functionExpression);
         Function gFunction = new Function("g(x) = " + gFunctionExpression);
 
         // Calculate tolerance based on the type of error
-        double tolerance = errorType == 1 ? 0.5 * Math.pow(10, -toleranceValue) : 5 * Math.pow(10, -toleranceValue);
+        double tolerance = 0.5 * Math.pow(10, -toleranceValue);
 
         // Initialize lists to store the values of x, f(x), errors, and iterations
         List<Double> xValues = new ArrayList<>();
@@ -88,30 +87,6 @@ public class FixedPointService {
                 : errors.get(iterationCount) < tolerance ? "The approximate solution is: " + currentX + ", with a tolerance = " + tolerance
                 : "Failed in " + maxIterations + " iterations";
 
-        // Apply precision formatting
-        List<Double> formattedXValues = new ArrayList<>();
-        for (double x : xValues) {
-            formattedXValues.add(precisionType == 1 ? roundSignificantFigures(x, (int) toleranceValue) : roundDecimalPlaces(x, (int) toleranceValue));
-        }
-
-        return new FixedPointResponse(message, formattedXValues, functionValues, errors, iterations);
-    }
-
-    private double roundSignificantFigures(double value, int significantFigures) {
-        if (value == 0) {
-            return 0;
-        }
-
-        final double d = Math.ceil(Math.log10(value < 0 ? -value : value));
-        final int power = significantFigures - (int) d;
-
-        final double magnitude = Math.pow(10, power);
-        final long shifted = Math.round(value * magnitude);
-        return shifted / magnitude;
-    }
-
-    private double roundDecimalPlaces(double value, int decimalPlaces) {
-        double scale = Math.pow(10, decimalPlaces);
-        return Math.round(value * scale) / scale;
+        return new FixedPointResponse(message, xValues, functionValues, errors, iterations);
     }
 }

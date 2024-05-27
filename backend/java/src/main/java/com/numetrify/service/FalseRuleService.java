@@ -20,7 +20,6 @@ public class FalseRuleService {
      * @param functionExpression the expression of the function
      * @param lowerBound the lower bound of the interval
      * @param upperBound the upper bound of the interval
-     * @param precisionType the type of precision to use (1 for significant figures, 2 for decimal places)
      * @param errorType the type of error to use (1 for absolute error, 2 for relative error)
      * @param toleranceValue the tolerance value for the stopping criterion
      * @param maxIterations the maximum number of iterations
@@ -33,7 +32,6 @@ public class FalseRuleService {
      * String functionExpression = "x^3 - x - 2";
      * double lowerBound = 1.0;
      * double upperBound = 2.0;
-     * int precisionType = 1;
      * int errorType = 1;
      * double toleranceValue = 0.01;
      * int maxIterations = 100;
@@ -46,14 +44,14 @@ public class FalseRuleService {
      * </pre>
      */
     @SneakyThrows
-    public FalseRuleResponse falseRule(String functionExpression, double lowerBound, double upperBound, int precisionType, int errorType, double toleranceValue, int maxIterations) {
+    public FalseRuleResponse falseRule(String functionExpression, double lowerBound, double upperBound, int errorType, double toleranceValue, int maxIterations) {
         // Create the function using the provided expression
         Function function = new Function("f(x) = " + functionExpression);
 
         // Calculate function values at the bounds
         double functionAtLowerBound = function.calculate(lowerBound);
         double functionAtUpperBound = function.calculate(upperBound);
-        double tolerance = precisionType == 1 ? 0.5 * Math.pow(10, -toleranceValue) : 5 * Math.pow(10, -toleranceValue);
+        double tolerance = 0.5 * Math.pow(10, -toleranceValue);
 
         // Check if the bounds are roots of the function
         if (functionAtLowerBound == 0) {
@@ -108,30 +106,6 @@ public class FalseRuleService {
                 : errors.get(iterationCount) < tolerance ? "The approximate solution is: " + rootApproximation + ", with a tolerance = " + tolerance
                 : "Failed in " + maxIterations + " iterations";
 
-        // Apply precision formatting
-        List<Double> formattedXValues = new ArrayList<>();
-        for (double x : xValues) {
-            formattedXValues.add(precisionType == 1 ? roundSignificantFigures(x, (int) toleranceValue) : roundDecimalPlaces(x, (int) toleranceValue));
-        }
-
-        return new FalseRuleResponse(message, formattedXValues, functionValues, errors, iterations);
-    }
-
-    private double roundSignificantFigures(double value, int significantFigures) {
-        if (value == 0) {
-            return 0;
-        }
-
-        final double d = Math.ceil(Math.log10(value < 0 ? -value : value));
-        final int power = significantFigures - (int) d;
-
-        final double magnitude = Math.pow(10, power);
-        final long shifted = Math.round(value * magnitude);
-        return shifted / magnitude;
-    }
-
-    private double roundDecimalPlaces(double value, int decimalPlaces) {
-        double scale = Math.pow(10, decimalPlaces);
-        return Math.round(value * scale) / scale;
+        return new FalseRuleResponse(message, xValues, functionValues, errors, iterations);
     }
 }

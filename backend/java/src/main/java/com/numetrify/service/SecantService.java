@@ -23,7 +23,6 @@ public class SecantService {
      * @param initialGuess1 the first initial guess for the root
      * @param initialGuess2 the second initial guess for the root
      * @param errorType the type of error to use (1 for absolute error, 2 for relative error)
-     * @param precisionType the type of precision to use (1 for significant figures, 2 for decimal places)
      * @param toleranceValue the tolerance value for the stopping criterion
      * @param maxIterations the maximum number of iterations
      * @return SecantResponse containing the result of the Secant method
@@ -35,7 +34,6 @@ public class SecantService {
      * double initialGuess1 = 1.0;
      * double initialGuess2 = 2.0;
      * int errorType = 1;
-     * int precisionType = 1;
      * double toleranceValue = 0.01;
      * int maxIterations = 100;
      * SecantResponse response = secantService.secant(functionExpression, initialGuess1, initialGuess2, errorType, precisionType, toleranceValue, maxIterations);
@@ -48,7 +46,7 @@ public class SecantService {
      * </pre>
      */
     @SneakyThrows
-    public SecantResponse secant(String functionExpression, double initialGuess1, double initialGuess2, int errorType, int precisionType, double toleranceValue, int maxIterations) {
+    public SecantResponse secant(String functionExpression, double initialGuess1, double initialGuess2, int errorType, double toleranceValue, int maxIterations) {
         // Create the function using mXparser
         Argument x = new Argument("x");
         Expression function = new Expression(functionExpression, x);
@@ -112,34 +110,10 @@ public class SecantService {
             errors.add(error);
         }
 
-        // Apply precision formatting
-        List<Double> formattedXValues = new ArrayList<>();
-        for (double xValue : xValues) {
-            formattedXValues.add(precisionType == 1 ? roundSignificantFigures(xValue, (int) toleranceValue) : roundDecimalPlaces(xValue, (int) toleranceValue));
-        }
-
         // Determine the result message
         String message = f1 == 0 ? x1 + " is a root of f(x)"
                 : errors.get(iterationCount + 1) < tolerance ? "The approximate solution is: " + x1 + ", with a tolerance = " + tolerance
                 : "Failed in " + maxIterations + " iterations";
-        return new SecantResponse(message, formattedXValues, functionValues, errors, iterations);
-    }
-
-    private double roundSignificantFigures(double value, int significantFigures) {
-        if (value == 0) {
-            return 0;
-        }
-
-        final double d = Math.ceil(Math.log10(value < 0 ? -value : value));
-        final int power = significantFigures - (int) d;
-
-        final double magnitude = Math.pow(10, power);
-        final long shifted = Math.round(value * magnitude);
-        return shifted / magnitude;
-    }
-
-    private double roundDecimalPlaces(double value, int decimalPlaces) {
-        double scale = Math.pow(10, decimalPlaces);
-        return Math.round(value * scale) / scale;
+        return new SecantResponse(message, xValues, functionValues, errors, iterations);
     }
 }

@@ -22,7 +22,6 @@ public class MultipleRootsService {
      * @param functionExpression the expression of the function
      * @param initialGuess the initial guess for the root
      * @param errorType the type of error to use (1 for absolute error, 2 for relative error)
-     * @param precisionType the type of precision to use (1 for significant figures, 2 for decimal places)
      * @param toleranceValue the tolerance value for the stopping criterion
      * @param maxIterations the maximum number of iterations
      * @return MultipleRootsResponse containing the result of the Multiple Roots method
@@ -33,7 +32,6 @@ public class MultipleRootsService {
      * String functionExpression = "x^3 - x - 2";
      * double initialGuess = 1.0;
      * int errorType = 1;
-     * int precisionType = 1;
      * double toleranceValue = 0.01;
      * int maxIterations = 100;
      * MultipleRootsResponse response = multipleRootsService.multipleRoots(functionExpression, initialGuess, errorType, precisionType, toleranceValue, maxIterations);
@@ -48,7 +46,7 @@ public class MultipleRootsService {
      * </pre>
      */
     @SneakyThrows
-    public MultipleRootsResponse multipleRoots(String functionExpression, double initialGuess, int errorType, int precisionType, double toleranceValue, int maxIterations) {
+    public MultipleRootsResponse multipleRoots(String functionExpression, double initialGuess, int errorType, double toleranceValue, int maxIterations) {
         // Create the function and its derivatives using mXparser
         Argument x = new Argument("x = " + initialGuess);
         Expression function = new Expression(functionExpression, x);
@@ -56,7 +54,7 @@ public class MultipleRootsService {
         Expression secondDerivative = new Expression("der(der(" + functionExpression + ", x), x)", x);
 
         // Calculate tolerance based on the type of error
-        double tolerance = MathUtils.getTolerance(toleranceValue, errorType);
+        double tolerance = 0.5 * Math.pow(10, -toleranceValue);
 
         // Initialize lists to store the values of x, f(x), f'(x), f''(x), errors, and iterations
         List<Double> xValues = new ArrayList<>();
@@ -147,17 +145,11 @@ public class MultipleRootsService {
             errors.add(error);
         }
 
-        // Apply precision formatting
-        List<Double> formattedXValues = new ArrayList<>();
-        for (double xValue : xValues) {
-            formattedXValues.add(precisionType == 1 ? roundSignificantFigures(xValue, (int) toleranceValue) : roundDecimalPlaces(xValue, (int) toleranceValue));
-        }
-
         // Determine the result message
         String message = currentValue == 0 ? currentX + " is a root of f(x)"
                 : errors.get(iterationCount) < tolerance ? "The approximate solution is: " + currentX + ", with a tolerance = " + tolerance
                 : "Failed in " + maxIterations + " iterations";
-        return new MultipleRootsResponse(message, formattedXValues, functionValues, firstDerivatives, secondDerivatives, errors, iterations);
+        return new MultipleRootsResponse(message, xValues, functionValues, firstDerivatives, secondDerivatives, errors, iterations);
     }
 
     private double roundSignificantFigures(double value, int significantFigures) {
