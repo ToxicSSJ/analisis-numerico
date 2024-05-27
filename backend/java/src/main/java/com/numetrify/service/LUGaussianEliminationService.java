@@ -32,7 +32,7 @@ public class LUGaussianEliminationService {
 
             for (int j = i + 1; j < n; j++) {
                 if (U[i][i] == 0) {
-                    return new LUGaussianEliminationResponse("Error: División by zero.", null, null, null);
+                    return new LUGaussianEliminationResponse("Error: Division by zero.", null, null, null);
                 }
                 double sum2 = 0;
                 for (int k = 0; k < i; k++) {

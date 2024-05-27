@@ -20,13 +20,10 @@ public class JacobiService {
      * Performs the Jacobi iterative method to solve the system of linear equations Ax = b.
      *
      * @param size the size of the matrix and vectors
-     * @param matrixData the string representation of the matrix A, with rows separated by semicolons (;) and elements within rows separated by spaces
-     * @param bData the string representation of the vector b, with elements separated by spaces
      * @param x0Data the string representation of the initial guess vector x0, with elements separated by spaces
      * @param errorType the type of error to use (1 for absolute error, 2 for relative error)
      * @param toleranceValue the tolerance value for the stopping criterion
      * @param maxIterations the maximum number of iterations
-     * @param normType the type of norm to use ("inf" for infinity norm, otherwise the integer value of the norm)
      * @return JacobiResponse containing the result of the Jacobi method
      *
      * Example usage:
@@ -48,22 +45,11 @@ public class JacobiService {
      * </pre>
      */
     @SneakyThrows
-    public JacobiResponse jacobi(int size, String matrixData, String bData, String x0Data, int errorType, double toleranceValue, int maxIterations, String normType) {
-        double[][] A = new double[size][size];
-        String[] rows = matrixData.split(";");
-        for (int i = 0; i < size; i++) {
-            String[] rowData = rows[i].trim().split("\\s+");
-            for (int j = 0; j < size; j++) {
-                A[i][j] = Double.parseDouble(rowData[j]);
-            }
-        }
+    public JacobiResponse jacobi(int size, double[][] A, double[] b, String x0Data, int errorType, double toleranceValue, int maxIterations) {
 
-        double[] b = parseVector(bData, size);
         double[] x0 = parseVector(x0Data, size);
 
         double tolerance = MathUtils.getTolerance(toleranceValue, errorType);
-
-        int norm = normType.equalsIgnoreCase("inf") ? Integer.MAX_VALUE : Integer.parseInt(normType);
 
         RealMatrix matrixA = MatrixUtils.createRealMatrix(A);
         RealVector vectorB = MatrixUtils.createRealVector(b);
@@ -99,7 +85,7 @@ public class JacobiService {
         xn.add(vectorX0.toArray());
         while (error > tolerance && iterations < maxIterations) {
             x1 = T.operate(vectorX0).add(C);
-            error = calculateError(x1, vectorX0, norm);
+            error = calculateError(x1, vectorX0);
             if (errorType == 2) {
                 error /= x1.getNorm();
             }
@@ -151,10 +137,9 @@ public class JacobiService {
      *
      * @param x1 the first vector
      * @param x0 the second vector
-     * @param norm the type of norm to use for the error calculation
      * @return the calculated error
      */
-    private double calculateError(RealVector x1, RealVector x0, int norm) {
+    private double calculateError(RealVector x1, RealVector x0) {
         return x1.subtract(x0).getNorm();
     }
 

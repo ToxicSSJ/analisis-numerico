@@ -14,7 +14,7 @@ import java.util.List;
 public class GaussSeidelService {
 
     @SneakyThrows
-    public GaussSeidelResponse gaussSeidel(int size, String matrixData, String bData, String x0Data, int errorType, double toleranceValue, int maxIterations, String normType) {
+    public GaussSeidelResponse gaussSeidel(int size, String matrixData, String bData, String x0Data, int errorType, double toleranceValue, int maxIterations) {
         // Parse matrix A
         double[][] A = new double[size][size];
         String[] rows = matrixData.split(";");
@@ -31,9 +31,6 @@ public class GaussSeidelService {
 
         // Determine tolerance
         double tolerance = MathUtils.getTolerance(toleranceValue, errorType);
-
-        // Determine norm
-        int norm = normType.equalsIgnoreCase("inf") ? Integer.MAX_VALUE : Integer.parseInt(normType);
 
         // Initialize matrices and vectors
         RealMatrix matrixA = MatrixUtils.createRealMatrix(A);
@@ -75,7 +72,7 @@ public class GaussSeidelService {
         errors.add(error);
         while (error > tolerance && iterations < maxIterations) {
             x1 = T.operate(vectorX0).add(C);
-            error = calculateError(x1, vectorX0, norm);
+            error = calculateError(x1, vectorX0);
             if (errorType == 2) {
                 error /= x1.getNorm();
             }
@@ -116,7 +113,7 @@ public class GaussSeidelService {
         return vector;
     }
 
-    private double calculateError(RealVector x1, RealVector x0, int norm) {
+    private double calculateError(RealVector x1, RealVector x0) {
         return x1.subtract(x0).getNorm();
     }
 

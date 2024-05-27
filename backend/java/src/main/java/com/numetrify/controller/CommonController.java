@@ -140,34 +140,6 @@ public class CommonController {
         return secantService.secant(function, initialGuess1, initialGuess2, errorType, toleranceValue, maxIterations);
     }
 
-    @Operation(summary = "Solves a system of linear equations using the Jacobi method", description = "Solves a system of linear equations using the Jacobi iterative method.")
-    @PostMapping("/jacobi")
-    public JacobiResponse jacobi(
-            @RequestParam int size,
-            @RequestParam String matrix,
-            @RequestParam String b,
-            @RequestParam String x0,
-            @RequestParam int errorType,
-            @RequestParam double toleranceValue,
-            @RequestParam int maxIterations,
-            @RequestParam String norm) {
-        return jacobiService.jacobi(size, matrix, b, x0, errorType, toleranceValue, maxIterations, norm);
-    }
-
-    @Operation(summary = "Solves a system of linear equations using the Gauss-Seidel method", description = "Solves a system of linear equations using the Gauss-Seidel iterative method.")
-    @PostMapping("/gauss-seidel")
-    public GaussSeidelResponse gaussSeidel(
-            @RequestParam int size,
-            @RequestParam String matrixData,
-            @RequestParam String b,
-            @RequestParam String x0,
-            @RequestParam int errorType,
-            @RequestParam double toleranceValue,
-            @RequestParam int maxIterations,
-            @RequestParam String norm) {
-        return gaussSeidelService.gaussSeidel(size, matrixData, b, x0, errorType, toleranceValue, maxIterations, norm);
-    }
-
     @Operation(summary = "Solves a system using Simple Gaussian Elimination", description = "Solves a system of linear equations using the Simple Gaussian Elimination method.")
     @PostMapping("/simple-gaussian-elimination")
     public SimpleGaussianEliminationResponse simpleGaussianElimination(
@@ -220,6 +192,34 @@ public class CommonController {
         double[][] matrix = parseMatrix(matrixData);
         double[] b = parseVector(bData);
         return doolittleService.doolittle(matrix, b);
+    }
+
+    @Operation(summary = "Solves a system of linear equations using the Jacobi method", description = "Solves a system of linear equations using the Jacobi iterative method.")
+    @PostMapping("/jacobi")
+    public JacobiResponse jacobi(
+            @RequestParam int size,
+            @RequestParam String matrix,
+            @RequestParam String b,
+            @RequestParam String x0,
+            @RequestParam int errorType,
+            @RequestParam double toleranceValue,
+            @RequestParam int maxIterations) {
+        double[][] matrixValue = parseMatrix(matrix);
+        double[] bValue = parseVector(b);
+        return jacobiService.jacobi(size, matrixValue, bValue, x0, errorType, toleranceValue, maxIterations);
+    }
+
+    @Operation(summary = "Solves a system of linear equations using the Gauss-Seidel method", description = "Solves a system of linear equations using the Gauss-Seidel iterative method.")
+    @PostMapping("/gauss-seidel")
+    public GaussSeidelResponse gaussSeidel(
+            @RequestParam int size,
+            @RequestParam String matrixData,
+            @RequestParam String b,
+            @RequestParam String x0,
+            @RequestParam int errorType,
+            @RequestParam double toleranceValue,
+            @RequestParam int maxIterations) {
+        return gaussSeidelService.gaussSeidel(size, matrixData, b, x0, errorType, toleranceValue, maxIterations);
     }
 
     private double[][] parseMatrix(String matrixText) {
