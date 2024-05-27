@@ -42,7 +42,7 @@ frontend/
 
 ## Screenshot
 
-![Numetrify Screenshot](path/to/screenshot.png)
+![Numetrify Screenshot](screenshot.png)
 
 ## User Manual
 
