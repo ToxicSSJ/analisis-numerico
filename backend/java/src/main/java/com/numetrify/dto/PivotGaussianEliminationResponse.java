@@ -5,10 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class LUDecompositionResponse {
-    private double[] solution;
-    private double[][] L;
-    private double[][] U;
+public class PivotGaussianEliminationResponse {
+    private final String message;
+    private final double[] solution;
 }

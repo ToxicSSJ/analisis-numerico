@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CholeskyResponse {
+    private final String message;
     private final double[] solution;
     private final double[][] L;
     private final double[][] U;

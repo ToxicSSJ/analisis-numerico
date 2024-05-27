@@ -3,10 +3,8 @@ package com.numetrify.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
-public class GaussianEliminationResponse {
+public class SimpleGaussianEliminationResponse {
     private final double[] solution;
 }

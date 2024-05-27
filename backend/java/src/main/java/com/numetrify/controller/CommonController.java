@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 
-import java.util.Arrays;
-
 @Slf4j
 @RestController
 @CrossOrigin(origins = "*")
@@ -40,19 +38,13 @@ public class CommonController {
     private GaussSeidelService gaussSeidelService;
 
     @Autowired
-    private SORService sorService;
-
-    @Autowired
-    private VandermondeService vandermondeService;
-
-    @Autowired
-    private NewtonDividedDifferencesService newtonDividedDifferencesService;
-
-    @Autowired
     private IncrementalSearchService incrementalSearchService;
 
     @Autowired
-    private GaussianEliminationService gaussianEliminationService;
+    private SimpleGaussianEliminationService simpleGaussianEliminationService;
+
+    @Autowired
+    private PivotGaussianEliminationService pivotGaussianEliminationService;
 
     @Autowired
     private CroutService croutService;
@@ -64,7 +56,7 @@ public class CommonController {
     private DoolittleService doolittleService;
 
     @Autowired
-    private LUDecompositionService luDecompositionService;
+    private LUGaussianEliminationService luGaussianEliminationService;
 
     @Operation(summary = "Performs the bisection method", description = "Calculates the root of a function using the bisection method.")
     @PostMapping("/bisection")
@@ -176,47 +168,30 @@ public class CommonController {
         return gaussSeidelService.gaussSeidel(size, matrixData, b, x0, errorType, toleranceValue, maxIterations, norm);
     }
 
-    @Operation(summary = "Solves a system of linear equations using the SOR method", description = "Solves a system of linear equations using the Successive Over-Relaxation (SOR) iterative method.")
-    @PostMapping("/sor")
-    public SORResponse sor(
-            @RequestParam int size,
-            @RequestParam String matrixData,
-            @RequestParam String b,
-            @RequestParam String x0,
-            @RequestParam double w,
-            @RequestParam int errorType,
-            @RequestParam double toleranceValue,
-            @RequestParam int maxIterations,
-            @RequestParam int norm) {
-        return sorService.solveSOR(size, matrixData, b, x0, w, errorType, toleranceValue, maxIterations, norm);
-    }
-
-    @Operation(summary = "Solves the Vandermonde matrix", description = "Solves a system of linear equations using the Vandermonde matrix.")
-    @PostMapping("/vandermonde")
-    public VandermondeResponse vandermonde(
-            @RequestParam String xValues,
-            @RequestParam String yValues) {
-        double[] x = Arrays.stream(xValues.split(" ")).mapToDouble(Double::parseDouble).toArray();
-        double[] y = Arrays.stream(yValues.split(" ")).mapToDouble(Double::parseDouble).toArray();
-        return vandermondeService.solveVandermonde(x, y);
-    }
-
-    @Operation(summary = "Calculates Newton Divided Differences", description = "Calculates the interpolating polynomial using Newton's divided differences method.")
-    @PostMapping("/newton-divided-differences")
-    public NewtonDividedDifferencesResponse newtonDividedDifferences(
-            @RequestParam String xValues,
-            @RequestParam String yValues) {
-        double[] x = Arrays.stream(xValues.split(" ")).mapToDouble(Double::parseDouble).toArray();
-        double[] y = Arrays.stream(yValues.split(" ")).mapToDouble(Double::parseDouble).toArray();
-        return newtonDividedDifferencesService.newtonDividedDifferences(x, y);
-    }
-
-    @Operation(summary = "Solves a system using Gaussian Elimination", description = "Solves a system of linear equations using the Gaussian Elimination method.")
-    @PostMapping("/gaussian-elimination")
-    public GaussianEliminationResponse gaussianElimination(
+    @Operation(summary = "Solves a system using Simple Gaussian Elimination", description = "Solves a system of linear equations using the Simple Gaussian Elimination method.")
+    @PostMapping("/simple-gaussian-elimination")
+    public SimpleGaussianEliminationResponse simpleGaussianElimination(
             @RequestParam String matrixA,
             @RequestParam String vectorB) {
-        return gaussianEliminationService.gaussianElimination(parseMatrix(matrixA), parseVector(vectorB));
+        return simpleGaussianEliminationService.simpleGaussianElimination(parseMatrix(matrixA), parseVector(vectorB));
+    }
+
+    @Operation(summary = "Solves a system using Pivot Gaussian Elimination", description = "Solves a system of linear equations using the Pivot Gaussian Elimination method.")
+    @PostMapping("/pivot-gaussian-elimination")
+    public PivotGaussianEliminationResponse pivotGaussianElimination(
+            @RequestParam String matrixA,
+            @RequestParam String vectorB) {
+        return pivotGaussianEliminationService.pivotGaussianElimination(parseMatrix(matrixA), parseVector(vectorB));
+    }
+
+    @Operation(summary = "Performs LU Gaussian Elimination", description = "Solves a system of linear equations using the LU Gaussian Elimination method.")
+    @PostMapping("/lu-gaussian-elimination")
+    public LUGaussianEliminationResponse luDecomposition(
+            @RequestParam String matrixA,
+            @RequestParam String vectorB) {
+        double[][] A = parseMatrix(matrixA);
+        double[] b = parseVector(vectorB);
+        return luGaussianEliminationService.luGaussianElimination(A, b);
     }
 
     @Operation(summary = "Solves a system using the Crout method", description = "Solves a system of linear equations using the Crout decomposition method.")
@@ -245,14 +220,6 @@ public class CommonController {
         double[][] matrix = parseMatrix(matrixData);
         double[] b = parseVector(bData);
         return doolittleService.doolittle(matrix, b);
-    }
-
-    @Operation(summary = "Performs LU Decomposition", description = "Solves a system of linear equations using the LU Decomposition method.")
-    @PostMapping("/lu-decomposition")
-    public LUDecompositionResponse luDecomposition(
-            @RequestParam String matrixData) {
-        double[][] A = parseMatrix(matrixData);
-        return luDecompositionService.luDecomposition(A);
     }
 
     private double[][] parseMatrix(String matrixText) {

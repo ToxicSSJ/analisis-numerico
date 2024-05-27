@@ -1,6 +1,7 @@
 package com.numetrify.service;
 
 import com.numetrify.dto.CholeskyResponse;
+import com.numetrify.service.matrix.CholeskyDecomposition;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,64 +34,15 @@ public class CholeskyService {
      * </pre>
      */
     public CholeskyResponse cholesky(double[][] A, double[] b) {
-        int n = A.length;
-        double[][] L = new double[n][n];
-        double[][] U = new double[n][n];
-
-        // Initialize L and U matrices
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == j) {
-                    U[i][i] = 1.0;
-                } else {
-                    U[i][j] = 0.0;
-                    L[i][j] = 0.0;
-                }
-            }
+        try {
+            CholeskyDecomposition cholesky = new CholeskyDecomposition(A);
+            double[] solution = cholesky.solve(b);
+            double[][] L = cholesky.getL();
+            double[][] U = cholesky.getU();
+            return new CholeskyResponse("Success", solution, L, U);
+        } catch (Exception e) {
+            return new CholeskyResponse("Error: " + e.getMessage(), null, null, null);
         }
-
-        // Perform Cholesky decomposition
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                double sum = 0.0;
-                for (int k = 0; k < j; k++) {
-                    sum += L[i][k] * L[j][k];
-                }
-                if (i == j) {
-                    L[i][j] = Math.sqrt(A[i][i] - sum);
-                } else {
-                    L[i][j] = (A[i][j] - sum) / L[j][j];
-                }
-            }
-        }
-
-        // Transpose L to get U
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                U[j][i] = L[i][j];
-            }
-        }
-
-        // Forward substitution to solve Lz = b
-        double[] z = new double[n];
-        for (int i = 0; i < n; i++) {
-            double sum = 0.0;
-            for (int j = 0; j < i; j++) {
-                sum += L[i][j] * z[j];
-            }
-            z[i] = (b[i] - sum) / L[i][i];
-        }
-
-        // Backward substitution to solve Ux = z
-        double[] x = new double[n];
-        for (int i = n - 1; i >= 0; i--) {
-            double sum = 0.0;
-            for (int j = i + 1; j < n; j++) {
-                sum += U[i][j] * x[j];
-            }
-            x[i] = (z[i] - sum) / U[i][i];
-        }
-
-        return new CholeskyResponse(x, L, U);
     }
+
 }
